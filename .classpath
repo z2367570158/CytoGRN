@@ -27,5 +27,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/eclipse/code/CytoGRN-app/RedPen2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

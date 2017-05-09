@@ -3,7 +3,6 @@ package org.SSheng.CytoGRN.internal;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +13,7 @@ import javax.swing.JPanel;
 
 import org.SSheng.CytoGRN.internal.GENIE3.Genie3ConfigPanel;
 import org.SSheng.CytoGRN.internal.pca_cmi.Pca_cmiConfigPanel;
+import org.SSheng.CytoGRN.internal.pca_pmi.Pca_pmiConfigPanel;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.model.CyNetworkFactory;
@@ -25,7 +25,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 
 	public JPanel algorithmPanel, configPanel, applyPanel;
 	JComboBox box;
-	String[] algorithmList = { "GENIE3" , "PCA-CMI"};
+	String[] algorithmList = { "GENIE3" , "PCA-CMI", "PCA-PMI"};
 
 	public MyControlPanel(CyNetworkFactory networkFactory, CyNetworkManager networkManager,
 			CyNetworkViewFactory networkViewFactory, CyNetworkViewManager networkViewManager) {
@@ -59,10 +59,17 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
+				}else if(selectedAlgorithm.equals("PCA-PMI")){
+					if (configPanel.getClass() != Pca_pmiConfigPanel.class) {
+						MyControlPanel.this.remove(configPanel);
+						configPanel = new Pca_pmiConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
+						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
+						MyControlPanel.this.validate();
+					}
 				}
 			}
 		};
-		box.addActionListener(listener);// Ìí¼Ó¼àÌýÆ÷
+		box.addActionListener(listener);
 
 		algorithmPanel.add(box);
 
