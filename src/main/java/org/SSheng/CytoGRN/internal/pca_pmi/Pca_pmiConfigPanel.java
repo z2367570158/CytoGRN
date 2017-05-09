@@ -195,7 +195,7 @@ public class Pca_pmiConfigPanel extends JPanel {
 
 		btnApply = new JButton("Apply");
 		btnApply.setPreferredSize(new Dimension(0, 40));
-		btnApply.addActionListener(new PCA_CMIListner());
+		btnApply.addActionListener(new PCA_PMIListner());
 
 		mycontrolpanel.applyPanel = new JPanel();
 		mycontrolpanel.applyPanel.setBorder(
@@ -207,7 +207,7 @@ public class Pca_pmiConfigPanel extends JPanel {
 		mycontrolpanel.add(mycontrolpanel.applyPanel, BorderLayout.SOUTH);
 	}
 
-	class PCA_CMIListner implements ActionListener {
+	class PCA_PMIListner implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
 			Thread processThread = new Thread(new Runnable() {
@@ -244,7 +244,7 @@ public class Pca_pmiConfigPanel extends JPanel {
 
 						pf.setString(Common.schedule4);
 						CyNetwork myNet = networkFactory.createNetwork();
-						myNet.getRow(myNet).set(CyNetwork.NAME, "PCA-CMI network");
+						myNet.getRow(myNet).set(CyNetwork.NAME, "PCA-PMI network");
 
 						HashMap<String, CyNode> nodeNameMap = new HashMap<String, CyNode>();
 

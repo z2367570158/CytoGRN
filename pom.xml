@@ -180,8 +180,14 @@
  			<scope>system</scope>
  			<systemPath>D:\eclipse\code\CytoGRN-app\pca_pmi.jar</systemPath>
 		</dependency>
-		
-		
+		<dependency>
+ 			<groupId>com.ssheng.CN</groupId>
+ 			<artifactId>CN</artifactId>
+  			<version>1.0</version>
+ 			<optional>true</optional>
+ 			<scope>system</scope>
+ 			<systemPath>D:\eclipse\code\CytoGRN-app\cn.jar</systemPath>
+		</dependency>
 </dependencies>
 
 </project>

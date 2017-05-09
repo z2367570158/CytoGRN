@@ -54,13 +54,22 @@ public class Common {
 			String[] items = line.split("\t");
 
 			result = new double[lines.length][items.length];
+			
+			int rowIndex = 0;
+			int colIndex = 0;
 
 			for (int i = 0; i < lines.length; i++) {
 				for (int j = 0; j < items.length; j++) {
 					line = lines[i];
 					items = line.split("\t");
-					result[i][j] = new Double(items[j]);
+					String data = items[j].trim();
+					if(!data.equals("")){
+						result[rowIndex][colIndex] = new Double(data);
+						colIndex++;
+					}
 				}
+				rowIndex++;
+				colIndex=0;
 			}
 
 		} catch (FileNotFoundException e) {

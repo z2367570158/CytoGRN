@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import org.SSheng.CytoGRN.internal.CN.CNConfigPanel;
 import org.SSheng.CytoGRN.internal.GENIE3.Genie3ConfigPanel;
 import org.SSheng.CytoGRN.internal.pca_cmi.Pca_cmiConfigPanel;
 import org.SSheng.CytoGRN.internal.pca_pmi.Pca_pmiConfigPanel;
@@ -25,7 +26,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 
 	public JPanel algorithmPanel, configPanel, applyPanel;
 	JComboBox box;
-	String[] algorithmList = { "GENIE3" , "PCA-CMI", "PCA-PMI"};
+	String[] algorithmList = { "GENIE3" , "PCA-CMI", "PCA-PMI", "CN"};
 
 	public MyControlPanel(CyNetworkFactory networkFactory, CyNetworkManager networkManager,
 			CyNetworkViewFactory networkViewFactory, CyNetworkViewManager networkViewManager) {
@@ -63,6 +64,13 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 					if (configPanel.getClass() != Pca_pmiConfigPanel.class) {
 						MyControlPanel.this.remove(configPanel);
 						configPanel = new Pca_pmiConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
+						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
+						MyControlPanel.this.validate();
+					}
+				}else if(selectedAlgorithm.equals("CN")){
+					if (configPanel.getClass() != CNConfigPanel.class) {
+						MyControlPanel.this.remove(configPanel);
+						configPanel = new CNConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
