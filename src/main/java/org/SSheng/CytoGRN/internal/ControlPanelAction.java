@@ -15,12 +15,9 @@ public class ControlPanelAction extends AbstractCyAction {
 	private MyControlPanel myControlPanel;
 
 	public ControlPanelAction(CySwingApplication desktopApp, MyControlPanel myCytoPanel) {
-
 		super("CytoGRN");
 		setPreferredMenu("Apps");
-
 		this.desktopApp = desktopApp;
-
 		this.cytoPanelWest = this.desktopApp.getCytoPanel(CytoPanelName.WEST);
 		this.myControlPanel = myCytoPanel;
 	}

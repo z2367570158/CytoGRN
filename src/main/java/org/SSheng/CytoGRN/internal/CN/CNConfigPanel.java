@@ -234,12 +234,10 @@ public class CNConfigPanel extends JPanel {
 
 						pf.setString(Common.schedule2);
 						ClassCN algorithmCN = new ClassCN();
-
 						MWNumericArray data = new MWNumericArray(dataArray, MWClassID.DOUBLE);
 						MWNumericArray lamdaa = new MWNumericArray(lamda, MWClassID.DOUBLE);
-						pf.setString(Common.schedule3);
-
 						Object[] parameters = {data, lamdaa, order0, threshold };
+						pf.setString(Common.schedule3);
 						Object[] out = algorithmCN.cn(1, parameters);
 						MWNumericArray result0 = (MWNumericArray) out[0];
 						double[][] GGTT = (double[][]) result0.toDoubleArray();
@@ -256,32 +254,22 @@ public class CNConfigPanel extends JPanel {
 							String target = list[i][1].trim();
 							CyNode nodeSource = null;
 							CyNode nodeTarget = null;
-
-							// for node1
 							if (nodeNameMap.containsKey(source)) {
-								// Node already existed, get a reference to
-								// it
 								nodeSource = nodeNameMap.get(source);
 							} else {
-								// Node does not exist, create new one
 								nodeSource = myNet.addNode();
 								CyRow attributes = myNet.getRow(nodeSource);
 								attributes.set("name", source);
 								nodeNameMap.put(source, nodeSource);
 							}
-
 							if (nodeNameMap.containsKey(target)) {
-								// Node already existed, get a reference to
-								// it
 								nodeTarget = nodeNameMap.get(target);
 							} else {
-								// Node does not exist, create new one
 								nodeTarget = myNet.addNode();
 								CyRow nodeAttributes = myNet.getRow(nodeTarget);
 								nodeAttributes.set("name", target);
 								nodeNameMap.put(target, nodeTarget);
 							}
-
 							CyEdge edge = myNet.addEdge(nodeSource, nodeTarget, false);
 							CyRow edgeAttributes = myNet.getRow(edge);
 							edgeAttributes.set("name", source + " - " + target);

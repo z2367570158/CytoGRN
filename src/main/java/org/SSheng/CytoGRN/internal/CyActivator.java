@@ -19,11 +19,11 @@ public class CyActivator extends AbstractCyActivator {
 
 		CyNetworkFactory networkFactory = getService(bc, CyNetworkFactory.class);
 		CyNetworkManager networkManager = getService(bc, CyNetworkManager.class);
-		
 		CyNetworkViewFactory networkViewFactory = getService(bc, CyNetworkViewFactory.class);
 		CyNetworkViewManager networkViewManager = getService(bc, CyNetworkViewManager.class);
-		
 		CySwingApplication cytoscapeDesktopService = getService(bc, CySwingApplication.class);
+		
+		
 		MyControlPanel myControlPanel = new MyControlPanel(networkFactory,networkManager,networkViewFactory,networkViewManager);
 		ControlPanelAction controlPanelAction = new ControlPanelAction(cytoscapeDesktopService, myControlPanel);
 

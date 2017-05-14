@@ -3,10 +3,13 @@ package org.SSheng.CytoGRN.internal.GENIE3;
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.HashMap;
 
@@ -18,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.SSheng.CytoGRN.internal.Common;
+import org.SSheng.CytoGRN.internal.DoubleRestrictAdapter;
+import org.SSheng.CytoGRN.internal.IntRestrictAdapter;
 import org.SSheng.CytoGRN.internal.MyControlPanel;
 import org.SSheng.CytoGRN.internal.ProcessingFrame;
 import org.cytoscape.model.CyEdge;
@@ -39,6 +44,7 @@ import GENIE3.ClassGENIE3;
 public class Genie3ConfigPanel extends JPanel {
 
 	double threshold;
+	int amount;
 
 	MyControlPanel mycontrolpanel;
 
@@ -56,8 +62,12 @@ public class Genie3ConfigPanel extends JPanel {
 	JTextField tfSelectNameFile;
 	JButton btnName;
 	JLabel labelNonNameNote;
-	JLabel labelThreshold;
+
+	CheckboxGroup edgefilterTypeGroup;
+	Checkbox cbThreshold;
 	JTextField tfThreshold;
+	Checkbox cbAmount;
+	JTextField tfAmount;
 
 	JButton btnApply;
 
@@ -73,7 +83,8 @@ public class Genie3ConfigPanel extends JPanel {
 		this.networkViewManager = this.networkViewManager;
 
 		this.setBorder(BorderFactory.createTitledBorder(null, "Configuration",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		this.setLayout(null);
 
 		labelSelectDataFile = new JLabel("please input your data file:");
@@ -136,15 +147,58 @@ public class Genie3ConfigPanel extends JPanel {
 		labelNonNameNote.setSize(new Dimension(360, 50));
 		labelNonNameNote.setLocation(10, 145);
 
-		labelThreshold = new JLabel("edge threshold:");
-		labelThreshold.setSize(new Dimension(100, 30));
-		labelThreshold.setLocation(10, 200);
+		edgefilterTypeGroup = new CheckboxGroup();
+
+		cbThreshold = new Checkbox("edge threshold:", edgefilterTypeGroup, false);
+		cbThreshold.setSize(new Dimension(130, 30));
+		cbThreshold.setLocation(10, 200);
 
 		tfThreshold = new JTextField();
-		tfThreshold.setSize(new Dimension(35, 20));
-		tfThreshold.setLocation(110, 205);
+		tfThreshold.setSize(new Dimension(40, 20));
+		tfThreshold.setLocation(150, 205);
 		tfThreshold.setHorizontalAlignment(JTextField.CENTER);
-		tfThreshold.setText("0.1");
+		tfThreshold.setEditable(false);
+		tfThreshold.addKeyListener(new DoubleRestrictAdapter());
+
+		cbAmount = new Checkbox("edges amount:", edgefilterTypeGroup, true);
+		cbAmount.setSize(new Dimension(130, 30));
+		cbAmount.setLocation(10, 240);
+
+		tfAmount = new JTextField();
+		tfAmount.setSize(new Dimension(40, 20));
+		tfAmount.setLocation(150, 245);
+		tfAmount.setHorizontalAlignment(JTextField.CENTER);
+		tfAmount.setText("10");
+		tfAmount.setEditable(true);
+		tfThreshold.addKeyListener(new IntRestrictAdapter());
+
+		cbThreshold.addItemListener(new ItemListener() {
+
+			public void itemStateChanged(ItemEvent ie) {
+				if (ie.getStateChange() == ItemEvent.SELECTED) {
+					cbThreshold.setForeground(Color.BLACK);
+					cbAmount.setForeground(Color.gray);
+					tfThreshold.setEditable(true);
+					tfThreshold.setText("0.09");
+					tfAmount.setEditable(false);
+					tfAmount.setText("");
+				}
+			}
+		});
+
+		cbAmount.addItemListener(new ItemListener() {
+
+			public void itemStateChanged(ItemEvent ie) {
+				if (ie.getStateChange() == ItemEvent.SELECTED) {
+					cbAmount.setForeground(Color.BLACK);
+					cbThreshold.setForeground(Color.gray);
+					tfAmount.setEditable(true);
+					tfAmount.setText("10");
+					tfThreshold.setEditable(false);
+					tfThreshold.setText("");
+				}
+			}
+		});
 
 		this.add(labelSelectDataFile);
 		this.add(tfSelectDataFile);
@@ -155,8 +209,10 @@ public class Genie3ConfigPanel extends JPanel {
 		this.add(tfSelectNameFile);
 		this.add(btnName);
 		this.add(labelNonNameNote);
-		this.add(labelThreshold);
+		this.add(cbThreshold);
 		this.add(tfThreshold);
+		this.add(cbAmount);
+		this.add(tfAmount);
 
 		if (mycontrolpanel.applyPanel != null) {
 			mycontrolpanel.remove(mycontrolpanel.applyPanel);
@@ -186,19 +242,17 @@ public class Genie3ConfigPanel extends JPanel {
 						pf.setString(Common.schedule0);
 						double[][] dataArray = Common.readDataFile(new File(tfSelectDataFile.getText()));
 						String[] nameArray = Common.readNameFile(new File(tfSelectNameFile.getText()));
-						threshold = new Double(tfThreshold.getText());
-						
-						if(cbRG.getState()==true && cbCG.getState()==false){
+
+						if (cbRG.getState() == true && cbCG.getState() == false) {
 							pf.setString(Common.schedule1);
 							double[][] temp = Common.getTranspose(dataArray);
 							dataArray = temp;
 						}
 
-
 						pf.setString(Common.schedule2);
 						ClassGENIE3 algorithmGenie3 = new ClassGENIE3();
 						MWNumericArray n = new MWNumericArray(dataArray, MWClassID.DOUBLE);
-						
+
 						pf.setString(Common.schedule3);
 						Object[] out = algorithmGenie3.GENIE3(1, n);
 						MWNumericArray result = (MWNumericArray) out[0];
@@ -213,22 +267,27 @@ public class Genie3ConfigPanel extends JPanel {
 
 						HashMap<String, CyNode> nodeNameMap = new HashMap<String, CyNode>();
 
-						for (int i = 0; i < list.length; i++) {
-							if (new Double(list[i][2]) > threshold) {
+						if (Genie3ConfigPanel.this.cbAmount.getState()
+								&& (!Genie3ConfigPanel.this.cbThreshold.getState())) {
+							amount = Integer.parseInt(tfAmount.getText());
+							int temp;
+							if (amount > list.length) {
+								temp = list.length;
+							} else {
+								temp = amount;
+							}
+							for (int i = 0; i < temp; i++) {
 								String source = list[i][0].trim();
 								String target = list[i][1].trim();
 								String edgeData = list[i][2].trim();
-								
+
 								CyNode nodeSource = null;
 								CyNode nodeTarget = null;
 
 								// for node1
 								if (nodeNameMap.containsKey(source)) {
-									// Node already existed, get a reference to
-									// it
 									nodeSource = nodeNameMap.get(source);
 								} else {
-									// Node does not exist, create new one
 									nodeSource = myNet.addNode();
 									CyRow attributes = myNet.getRow(nodeSource);
 									attributes.set("name", source);
@@ -236,11 +295,8 @@ public class Genie3ConfigPanel extends JPanel {
 								}
 
 								if (nodeNameMap.containsKey(target)) {
-									// Node already existed, get a reference to
-									// it
 									nodeTarget = nodeNameMap.get(target);
 								} else {
-									// Node does not exist, create new one
 									nodeTarget = myNet.addNode();
 									CyRow attributes = myNet.getRow(nodeTarget);
 									attributes.set("name", target);
@@ -249,17 +305,56 @@ public class Genie3ConfigPanel extends JPanel {
 
 								CyEdge edge = myNet.addEdge(nodeSource, nodeTarget, true);
 								CyRow edgeAttributes = myNet.getRow(edge);
-								edgeAttributes.set("name", source+" - "+target);
-								edgeAttributes.set("interaction", edgeData );
-								pf.setString(Common.schedule4+":  "+source+"  "+target);
+								edgeAttributes.set("name", source + " - " + target);
+								edgeAttributes.set("interaction", edgeData);
+								pf.setString(Common.schedule4 + ":  " + source + "  " + target);
+							}
+						} else if (Genie3ConfigPanel.this.cbThreshold.getState()
+								&& (!Genie3ConfigPanel.this.cbAmount.getState())) {
+							threshold = new Double(tfThreshold.getText());
+							for (int i = 0; i < list.length; i++) {
+								if (new Double(list[i][2]) > threshold) {
+									String source = list[i][0].trim();
+									String target = list[i][1].trim();
+									String edgeData = list[i][2].trim();
+
+									CyNode nodeSource = null;
+									CyNode nodeTarget = null;
+
+									// for node1
+									if (nodeNameMap.containsKey(source)) {
+										nodeSource = nodeNameMap.get(source);
+									} else {
+										nodeSource = myNet.addNode();
+										CyRow attributes = myNet.getRow(nodeSource);
+										attributes.set("name", source);
+										nodeNameMap.put(source, nodeSource);
+									}
+
+									if (nodeNameMap.containsKey(target)) {
+										nodeTarget = nodeNameMap.get(target);
+									} else {
+										nodeTarget = myNet.addNode();
+										CyRow attributes = myNet.getRow(nodeTarget);
+										attributes.set("name", target);
+										nodeNameMap.put(target, nodeTarget);
+									}
+
+									CyEdge edge = myNet.addEdge(nodeSource, nodeTarget, true);
+									CyRow edgeAttributes = myNet.getRow(edge);
+									edgeAttributes.set("name", source + " - " + target);
+									edgeAttributes.set("interaction", edgeData);
+									pf.setString(Common.schedule4 + ":  " + source + "  " + target);
+								}
 							}
 						}
+
 						networkManager.addNetwork(myNet);
 
 						pf.setString(Common.schedule5);
 						MWArray.disposeArray(n);
 						MWArray.disposeArray(result);
-						
+
 						pf.dispose();
 					} catch (MWException e) {
 						// TODO Auto-generated catch block
@@ -271,7 +366,7 @@ public class Genie3ConfigPanel extends JPanel {
 		}
 
 	}
-	
+
 	public String[][] getList(double[][] vim, String[] nameArray) {
 
 		String[][] result = new String[vim.length * (vim[0].length - 1)][3];
