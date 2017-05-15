@@ -188,6 +188,15 @@
  			<scope>system</scope>
  			<systemPath>D:\eclipse\code\CytoGRN-app\cn.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+ 			<groupId>com.ssheng.Multigranger</groupId>
+ 			<artifactId>Multigranger</artifactId>
+  			<version>1.0</version>
+ 			<optional>true</optional>
+ 			<scope>system</scope>
+ 			<systemPath>D:\eclipse\code\CytoGRN-app\runMultigrangerNew3.jar</systemPath>
+		</dependency>
 </dependencies>
 
 </project>

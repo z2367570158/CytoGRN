@@ -11,10 +11,11 @@ import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import org.SSheng.CytoGRN.internal.CN.CNConfigPanel;
-import org.SSheng.CytoGRN.internal.GENIE3.Genie3ConfigPanel;
-import org.SSheng.CytoGRN.internal.pca_cmi.Pca_cmiConfigPanel;
-import org.SSheng.CytoGRN.internal.pca_pmi.Pca_pmiConfigPanel;
+import org.SSheng.CytoGRN.algorithm.CN.CNConfigPanel;
+import org.SSheng.CytoGRN.algorithm.GENIE3.Genie3ConfigPanel;
+import org.SSheng.CytoGRN.algorithm.Multigranger.MultigrangerConfigPanel;
+import org.SSheng.CytoGRN.algorithm.pca_cmi.Pca_cmiConfigPanel;
+import org.SSheng.CytoGRN.algorithm.pca_pmi.Pca_pmiConfigPanel;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.model.CyNetworkFactory;
@@ -26,7 +27,8 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 
 	public JPanel algorithmPanel, configPanel, applyPanel;
 	JComboBox box;
-	String[] algorithmList = { "GENIE3" , "PCA-CMI", "PCA-PMI", "CN"};
+	String[] algorithmList = { "=======================Algorithms========================", "GENIE3", "PCA-CMI", "PCA-PMI", "CN", "Multigranger",
+			"=========================Tools===========================", "merge networks" };
 
 	public MyControlPanel(CyNetworkFactory networkFactory, CyNetworkManager networkManager,
 			CyNetworkViewFactory networkViewFactory, CyNetworkViewManager networkViewManager) {
@@ -35,10 +37,11 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 
 		algorithmPanel = new JPanel();
 		algorithmPanel.setBorder(BorderFactory.createTitledBorder(null, "Algorithm",
-				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+				javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+				javax.swing.border.TitledBorder.DEFAULT_POSITION));
 		algorithmPanel.setLayout(new BorderLayout());
 
-		configPanel = new Genie3ConfigPanel(this,networkFactory, networkManager, networkViewFactory, networkViewManager);
+		configPanel = new JPanel();
 
 		// 实例化一个下拉菜单栏对象
 		box = new JComboBox(algorithmList);
@@ -49,28 +52,54 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 				if (selectedAlgorithm.equals("GENIE3")) {
 					if (configPanel.getClass() != Genie3ConfigPanel.class) {
 						MyControlPanel.this.remove(configPanel);
-						configPanel = new Genie3ConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
+						configPanel = new Genie3ConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+								networkViewFactory, networkViewManager);
+						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
-				}else if(selectedAlgorithm.equals("PCA-CMI")){
+				} else if (selectedAlgorithm.equals("PCA-CMI")) {
 					if (configPanel.getClass() != Pca_cmiConfigPanel.class) {
 						MyControlPanel.this.remove(configPanel);
-						configPanel = new Pca_cmiConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
+						configPanel = new Pca_cmiConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+								networkViewFactory, networkViewManager);
+						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
-				}else if(selectedAlgorithm.equals("PCA-PMI")){
+				} else if (selectedAlgorithm.equals("PCA-PMI")) {
 					if (configPanel.getClass() != Pca_pmiConfigPanel.class) {
 						MyControlPanel.this.remove(configPanel);
-						configPanel = new Pca_pmiConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
+						configPanel = new Pca_pmiConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+								networkViewFactory, networkViewManager);
+						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
-				}else if(selectedAlgorithm.equals("CN")){
+				} else if (selectedAlgorithm.equals("CN")) {
 					if (configPanel.getClass() != CNConfigPanel.class) {
 						MyControlPanel.this.remove(configPanel);
-						configPanel = new CNConfigPanel(MyControlPanel.this,networkFactory, networkManager, networkViewFactory, networkViewManager);;
+						configPanel = new CNConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+								networkViewFactory, networkViewManager);
+						;
+						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
+						MyControlPanel.this.validate();
+					}
+				} else if (selectedAlgorithm.equals("Multigranger")) {
+					if (configPanel.getClass() != MultigrangerConfigPanel.class) {
+						MyControlPanel.this.remove(configPanel);
+						configPanel = new MultigrangerConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+								networkViewFactory, networkViewManager);
+						;
+						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
+						MyControlPanel.this.validate();
+					}
+				}else if (selectedAlgorithm.equals("merge networks")) {
+					if (configPanel.getClass() != MultigrangerConfigPanel.class) {
+						MyControlPanel.this.remove(configPanel);
+						configPanel = new MultigrangerConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+								networkViewFactory, networkViewManager);
+						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
