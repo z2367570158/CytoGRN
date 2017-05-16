@@ -11,11 +11,12 @@ import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import org.SSheng.CytoGRN.algorithm.CN.CNConfigPanel;
-import org.SSheng.CytoGRN.algorithm.GENIE3.Genie3ConfigPanel;
-import org.SSheng.CytoGRN.algorithm.Multigranger.MultigrangerConfigPanel;
-import org.SSheng.CytoGRN.algorithm.pca_cmi.Pca_cmiConfigPanel;
-import org.SSheng.CytoGRN.algorithm.pca_pmi.Pca_pmiConfigPanel;
+import org.SSheng.CytoGRN.internal.algorithm.CN.CNConfigPanel;
+import org.SSheng.CytoGRN.internal.algorithm.GENIE3.Genie3ConfigPanel;
+import org.SSheng.CytoGRN.internal.algorithm.Multigranger.MultigrangerConfigPanel;
+import org.SSheng.CytoGRN.internal.algorithm.pca_cmi.Pca_cmiConfigPanel;
+import org.SSheng.CytoGRN.internal.algorithm.pca_pmi.Pca_pmiConfigPanel;
+import org.SSheng.CytoGRN.internal.tool.mergenetworks.MergeNetworksConfigPanel;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.model.CyNetworkFactory;
@@ -54,7 +55,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						MyControlPanel.this.remove(configPanel);
 						configPanel = new Genie3ConfigPanel(MyControlPanel.this, networkFactory, networkManager,
 								networkViewFactory, networkViewManager);
-						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
@@ -63,7 +63,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						MyControlPanel.this.remove(configPanel);
 						configPanel = new Pca_cmiConfigPanel(MyControlPanel.this, networkFactory, networkManager,
 								networkViewFactory, networkViewManager);
-						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
@@ -72,7 +71,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						MyControlPanel.this.remove(configPanel);
 						configPanel = new Pca_pmiConfigPanel(MyControlPanel.this, networkFactory, networkManager,
 								networkViewFactory, networkViewManager);
-						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
@@ -81,7 +79,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						MyControlPanel.this.remove(configPanel);
 						configPanel = new CNConfigPanel(MyControlPanel.this, networkFactory, networkManager,
 								networkViewFactory, networkViewManager);
-						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
@@ -90,16 +87,14 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						MyControlPanel.this.remove(configPanel);
 						configPanel = new MultigrangerConfigPanel(MyControlPanel.this, networkFactory, networkManager,
 								networkViewFactory, networkViewManager);
-						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
 				}else if (selectedAlgorithm.equals("merge networks")) {
-					if (configPanel.getClass() != MultigrangerConfigPanel.class) {
+					if (configPanel.getClass() != MergeNetworksConfigPanel.class) {
 						MyControlPanel.this.remove(configPanel);
-						configPanel = new MultigrangerConfigPanel(MyControlPanel.this, networkFactory, networkManager,
+						configPanel = new MergeNetworksConfigPanel(MyControlPanel.this, networkFactory, networkManager,
 								networkViewFactory, networkViewManager);
-						;
 						MyControlPanel.this.add(configPanel, BorderLayout.CENTER);
 						MyControlPanel.this.validate();
 					}
